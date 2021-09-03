@@ -18,7 +18,7 @@ class ModelTests(TestCase):
 
         user = get_user_model().objects.create_user(
             email=email,
-            password=password
+            password=password,
         )
 
         self.assertEquals(user.email, email)
@@ -44,7 +44,7 @@ class ModelTests(TestCase):
 
         user = get_user_model().objects.create_superuser(
             'someone@somewhere.com',
-            'password'
+            'password',
         )
 
         self.assertTrue(user.is_superuser)
@@ -54,7 +54,7 @@ class ModelTests(TestCase):
         """Test the tag string representation"""
         tag = models.Tag.objects.create(
             user=sample_user(),
-            name='Vegan'
+            name='Vegan',
         )
 
         self.assertEqual(str(tag), tag.name)
@@ -63,7 +63,18 @@ class ModelTests(TestCase):
         """Test the ingredient string representation"""
         ingredient = models.Ingredient.objects.create(
             user=sample_user(),
-            name='Cucumber'
+            name='Cucumber',
         )
 
         self.assertEqual(str(ingredient), ingredient.name)
+
+    def test_recipe_str(self):
+        """Test the recipe string representation"""
+        recipe = models.Recipe.objects.create(
+            user=sample_user(),
+            title='Steak and mushroom sauce',
+            time_minutes=5,
+            price=5.00,
+        )
+
+        self.assertEqual(str(recipe), recipe.title)
