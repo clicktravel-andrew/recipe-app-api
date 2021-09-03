@@ -29,11 +29,11 @@ class PrivateTagsApiTests(TestCase):
     """Test private ingredients API"""
 
     def setUp(self):
-        self.client = APIClient()
         self.user = get_user_model().objects.create_user(
             'someone@somewhere.com',
             'password',
         )
+        self.client = APIClient()
         self.client.force_authenticate(self.user)
 
     def test_retrieve_ingredient_list(self):
@@ -62,3 +62,21 @@ class PrivateTagsApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]['name'], ingredient.name)
+
+    def test_create_ingredient_successful(self):
+        """Test that a valid ingredient is created"""
+        payload = {'name': 'Cabbage'}
+        self.client.post(INGREDIENTS_URL, payload)
+
+        exists = Ingredient.objects.filter(
+            user=self.user,
+            name=payload['name'],
+        ).exists()
+        self.assertTrue(exists)
+
+    def test_create_ingredient_invalid(self):
+        """Test creating an invalid ingredient fails"""
+        payload = {'name': ''}
+        response = self.client.post(INGREDIENTS_URL, payload)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
