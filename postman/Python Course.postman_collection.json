@@ -246,7 +246,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/recipe/recipes/",
+							"raw": "http://127.0.0.1:8000/api/recipe/recipes/?ingredients=2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -260,6 +260,12 @@
 								"recipe",
 								"recipes",
 								""
+							],
+							"query": [
+								{
+									"key": "ingredients",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -349,8 +355,14 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": "Curry.jpg"
+								}
+							],
 							"options": {
 								"raw": {
 									"language": "json"
